@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aegis Comply — AI RegTech Platform</title>
+
+<style>
+body {
+  margin:0;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background:#020617;
+  color:white;
+  overflow-x:hidden;
+}
+
+header {
+  padding:80px 8%;
+  background: radial-gradient(circle at top, #1e3a8a, #020617);
+}
+
+h1 {
+  font-size:56px;
+  margin-bottom:10px;
+}
+
+p {
+  color:#cbd5f5;
+}
+
+.btn {
+  padding:14px 28px;
+  background:#2563eb;
+  border-radius:12px;
+  display:inline-block;
+  margin-top:20px;
+  cursor:pointer;
+}
+
+.container {
+  padding:60px 8%;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns: repeat(3,1fr);
+  gap:20px;
+}
+
+.card {
+  background:#0f172a;
+  padding:24px;
+  border-radius:20px;
+  border:1px solid #1e293b;
+  transition:0.3s;
+}
+
+.card:hover {
+  transform:translateY(-5px);
+}
+
+input, select {
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border-radius:12px;
+  border:none;
+  background:#020617;
+  color:white;
+}
+
+button {
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:#2563eb;
+  margin-top:20px;
+  cursor:pointer;
+}
+
+.loader {
+  height:6px;
+  background:#1e3a8a;
+  margin-top:20px;
+  width:0%;
+  transition:1.5s;
+}
+
+.dashboard {
+  display:none;
+  margin-top:40px;
+}
+
+.metric {
+  font-size:32px;
+  font-weight:bold;
+}
+
+.low {color:#22c55e;}
+.medium {color:#f59e0b;}
+.high {color:#ef4444;}
+
+@media(max-width:900px){
+  .grid {grid-template-columns:1fr;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Aegis Comply</h1>
+  <p>AI-платформа для автоматизированного двойного комплаенса внешнеэкономических сделок</p>
+  <div class="btn" onclick="scrollToDemo()">Попробовать демо</div>
+</header>
+
+<div class="container">
+
+<div class="grid">
+  <div class="card">
+    <h3>AI Risk Engine</h3>
+    <p>Модель оценки санкционных рисков</p>
+  </div>
+  <div class="card">
+    <h3>RegTech</h3>
+    <p>Соответствие OFAC, ЕС и РФ</p>
+  </div>
+  <div class="card">
+    <h3>Dashboard</h3>
+    <p>Комплаенс-досье сделки</p>
+  </div>
+</div>
+
+<div class="card" id="demo">
+  <h2>Демо-анализ сделки</h2>
+
+  <label>Страна</label>
+  <select id="country">
+    <option>Россия</option>
+    <option>Китай</option>
+    <option>Турция</option>
+    <option>ОАЭ</option>
+    <option>США</option>
+  </select>
+
+  <label>Тип товара</label>
+  <select id="goods">
+    <option>Обычный</option>
+    <option>Двойного назначения</option>
+  </select>
+
+  <label>Валюта</label>
+  <select id="currency">
+    <option>RUB</option>
+    <option>USD</option>
+    <option>EUR</option>
+  </select>
+
+  <button onclick="runAI()">Запустить AI-анализ</button>
+
+  <div class="loader" id="loader"></div>
+
+  <div class="dashboard" id="dashboard">
+    <h2>AI Result</h2>
+    <div id="risk"></div>
+    <div id="details"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+function scrollToDemo(){
+  document.getElementById("demo").scrollIntoView({behavior:"smooth"});
+}
+
+function runAI(){
+  let loader = document.getElementById("loader");
+  loader.style.width = "100%";
+
+  setTimeout(() => {
+    let country = document.getElementById("country").value;
+    let goods = document.getElementById("goods").value;
+    let currency = document.getElementById("currency").value;
+
+    let riskScore = 0;
+
+    if(country==="США") riskScore+=3;
+    if(country==="Турция") riskScore+=2;
+    if(goods==="Двойного назначения") riskScore+=3;
+    if(currency==="USD") riskScore+=2;
+
+    let level="", color="";
+
+    if(riskScore>=6){ level="Высокий риск"; color="high";}
+    else if(riskScore>=3){ level="Средний риск"; color="medium";}
+    else { level="Низкий риск"; color="low";}
+
+    document.getElementById("dashboard").style.display="block";
+
+    document.getElementById("risk").innerHTML = `
+      <div class="metric ${color}">${level}</div>
+      <p>Risk Score: ${riskScore}/10</p>
+    `;
+
+    document.getElementById("details").innerHTML = `
+      <p>✔ Проверка санкционных списков</p>
+      <p>✔ Анализ экспортного контроля</p>
+      <p>✔ Финансовые ограничения</p>
+      <p><b>Рекомендация:</b> провести углублённый due diligence</p>
+    `;
+
+  },1500);
+}
+</script>
+
+</body>
+</html>
